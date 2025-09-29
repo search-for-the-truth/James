@@ -1,0 +1,159 @@
+---
+title: "Pediatric Coccidioidomycosis Analysis"
+author: "James,Owen,Qin"
+format:
+    pdf: 
+        documentclass: report
+        papersize: letter
+        toc: true
+        toc-title: Contents
+        highlight-style: github
+        mainfont: Lato
+        monofont: Roboto
+        mathfont: Lato
+        geometry: 
+          - top = 20mm
+          - bottom = 20mm
+          - left = 20mm
+          - right = 20mm
+engine: knitr
+---
+
+# Context
+
+Pediatric coccidioidomycosis (Valley fever) is **a fungal infection acquired by inhaling soil-dwelling fungal spores**, often presenting in children with symptoms like fever, cough, and extreme fatigue, though many infections are asymptomatic. Complications, more common in children than adults, can include pleural effusion, [empyema](https://www.google.com/search?client=safari&sca_esv=6131e743ab36f415&cs=1&sxsrf=AE3TifPcAAtPUX7j77oQ0JCbNWRpXYvU3w%3A1759096638104&q=empyema&sa=X&ved=2ahUKEwjz68LRufyPAxW0OEQIHWpoMokQxccNegQIAxAB&mstk=AUtExfBq6gofDdLo7moDkVJ_3plO9a_tH81acK34BHarIjyhlATVxBAycSe9lHlT-_5mirytkqwrrgxFd8nhGFE4D7cAUdegTPkxv7HScqih5AY8DifxtfRL3r17zVU8eW6kxJEUFP90pcY__hrhDRfIrmxyRXtF9DDoXASrjtlVBIhY0V-wEFCEu-_wbelcnF5gbFgqS3-V9XRThQwAz0gt2_dFblvJIoWrwz5c_B66-Qipo2jIVxqMeSEzIJ2ic5e7C3AQNPLB7FFzYAnhn0UY_tBG&csui=3), and mediastinal involvement, with rare but serious cases potentially leading to disseminated disease affecting the brain, spine, or bones. Diagnosis involves [serologic testing](https://www.google.com/search?client=safari&sca_esv=6131e743ab36f415&cs=1&sxsrf=AE3TifPcAAtPUX7j77oQ0JCbNWRpXYvU3w%3A1759096638104&q=serologic+testing&sa=X&ved=2ahUKEwjz68LRufyPAxW0OEQIHWpoMokQxccNegQICBAB&mstk=AUtExfBq6gofDdLo7moDkVJ_3plO9a_tH81acK34BHarIjyhlATVxBAycSe9lHlT-_5mirytkqwrrgxFd8nhGFE4D7cAUdegTPkxv7HScqih5AY8DifxtfRL3r17zVU8eW6kxJEUFP90pcY__hrhDRfIrmxyRXtF9DDoXASrjtlVBIhY0V-wEFCEu-_wbelcnF5gbFgqS3-V9XRThQwAz0gt2_dFblvJIoWrwz5c_B66-Qipo2jIVxqMeSEzIJ2ic5e7C3AQNPLB7FFzYAnhn0UY_tBG&csui=3) and imaging, while treatment for moderate to severe cases uses [antifungal medications](https://www.google.com/search?client=safari&sca_esv=6131e743ab36f415&cs=1&sxsrf=AE3TifPcAAtPUX7j77oQ0JCbNWRpXYvU3w%3A1759096638104&q=antifungal+medications&sa=X&ved=2ahUKEwjz68LRufyPAxW0OEQIHWpoMokQxccNegQICBAC&mstk=AUtExfBq6gofDdLo7moDkVJ_3plO9a_tH81acK34BHarIjyhlATVxBAycSe9lHlT-_5mirytkqwrrgxFd8nhGFE4D7cAUdegTPkxv7HScqih5AY8DifxtfRL3r17zVU8eW6kxJEUFP90pcY__hrhDRfIrmxyRXtF9DDoXASrjtlVBIhY0V-wEFCEu-_wbelcnF5gbFgqS3-V9XRThQwAz0gt2_dFblvJIoWrwz5c_B66-Qipo2jIVxqMeSEzIJ2ic5e7C3AQNPLB7FFzYAnhn0UY_tBG&csui=3) like [fluconazole](https://www.google.com/search?client=safari&sca_esv=6131e743ab36f415&cs=1&sxsrf=AE3TifPcAAtPUX7j77oQ0JCbNWRpXYvU3w%3A1759096638104&q=fluconazole&sa=X&ved=2ahUKEwjz68LRufyPAxW0OEQIHWpoMokQxccNegQICBAD&mstk=AUtExfBq6gofDdLo7moDkVJ_3plO9a_tH81acK34BHarIjyhlATVxBAycSe9lHlT-_5mirytkqwrrgxFd8nhGFE4D7cAUdegTPkxv7HScqih5AY8DifxtfRL3r17zVU8eW6kxJEUFP90pcY__hrhDRfIrmxyRXtF9DDoXASrjtlVBIhY0V-wEFCEu-_wbelcnF5gbFgqS3-V9XRThQwAz0gt2_dFblvJIoWrwz5c_B66-Qipo2jIVxqMeSEzIJ2ic5e7C3AQNPLB7FFzYAnhn0UY_tBG&csui=3), sometimes requiring lifelong therapy for central nervous system involvement. 
+
+**Symptoms**
+
+-   **Common:** Fever, cough, fatigue, headache, muscle and joint aches, chills. 
+
+-   **Chest-related:** Shortness of breath, chest pain. 
+
+-   **Skin manifestations:** A rash and [erythema nodosum](https://www.google.com/search?client=safari&sca_esv=6131e743ab36f415&cs=1&sxsrf=AE3TifPcAAtPUX7j77oQ0JCbNWRpXYvU3w%3A1759096638104&q=erythema+nodosum&sa=X&ved=2ahUKEwjz68LRufyPAxW0OEQIHWpoMokQxccNegQIFhAB&mstk=AUtExfBq6gofDdLo7moDkVJ_3plO9a_tH81acK34BHarIjyhlATVxBAycSe9lHlT-_5mirytkqwrrgxFd8nhGFE4D7cAUdegTPkxv7HScqih5AY8DifxtfRL3r17zVU8eW6kxJEUFP90pcY__hrhDRfIrmxyRXtF9DDoXASrjtlVBIhY0V-wEFCEu-_wbelcnF5gbFgqS3-V9XRThQwAz0gt2_dFblvJIoWrwz5c_B66-Qipo2jIVxqMeSEzIJ2ic5e7C3AQNPLB7FFzYAnhn0UY_tBG&csui=3) (tender red bumps under the skin) can occur. 
+
+-   **Severe complications:** Pleural effusions (fluid around the lung), empyema (pus in the chest cavity), and mediastinal involvement are more frequent in children. 
+
+**Severe & Disseminated Disease**
+
+-   **Spread to other areas:** In rare cases, the fungus can spread from the lungs to other parts of the body. 
+
+-   **Central Nervous System (CNS) involvement:** Coccidioidomycosis can infect the brain or spinal cord, which is a serious and life-threatening condition. 
+
+-   **Bone and joint infections:** The infection can also cause bone or joint disease. 
+
+**Diagnosis**
+
+-   **Imaging:**
+
+    Chest X-rays and CT scans can show signs of the infection, such as lung nodules or inflammation. 
+
+-   **Blood tests:**
+
+    Serologic tests (antibody tests like IgM and IgG) are crucial for diagnosis. 
+
+-   **Other tests:**
+
+    In some cases, antigen tests and PCR (polymerase chain reaction) testing of blood, cerebrospinal fluid, or respiratory samples may be performed. 
+
+**Treatment**
+
+-   **Supportive care:**
+
+    Mild cases may only require rest and over-the-counter pain and fever reducers. 
+
+-   **Antifungal medications:**
+
+    Moderate to severe infections or those with a high risk of complications are treated with antifungal drugs, most commonly fluconazole. 
+
+-   **Serious infections:**
+
+    Amphotericin B may be used for severe, diffuse, or disseminated infections. 
+
+-   **Lifelong therapy:**
+
+    Some very severe cases, such as those with meningitis (infections of the brain and spinal cord), may require lifelong antifungal treatment. 
+
+**Prevention**
+
+-   **Reduce dust exposure:**
+
+    In endemic areas (like the Southwestern United States), efforts can be made to reduce dust during construction, and children may need to reduce outdoor play during windy conditions.
+
+-   **Wear masks:**
+
+    Face masks can protect children and adults from inhaling fungal spores in dusty environments.
+
+# Data Exploration
+
+## Data Loading and formatting
+
+```{r}
+#| echo: False
+
+#load the data
+rash <- read.csv("../CocciProjectforStats.csv", sep = '\t')
+```
+
+```{r}
+#| echo: false
+
+# make header
+rash_header <- strsplit(rash[1,],",")[[1]]
+rash_mat <- matrix(0,nrow = nrow(rash)-1,ncol = length(rash_header))
+rash_df <- as.data.frame(rash_mat)
+colnames(rash_df) <- rash_header
+
+# make data frame
+for (i in 2:nrow(rash)) {
+  rash_row <- strsplit(rash[i, ],",")[[1]]
+  rash_df[i-1, ] <- rash_row
+}
+```
+
+## Data Types:
+
+-   **Study ID**: Categorical. ID of the patient. (Not typical useful here)
+
+-   **Erythema nodosum:** Erythema nodosum is an inflammatory skin condition characterized by the development of painful, red, and tender nodules or lumps, typically on the shins (rash). Since it sounds like a more severe symptom, there should be an order on it, but we only have two categories (Yes or No) - Categorical without order.
+
+-   **Age at diagnosis:** Age - Continuous.
+
+-   **Ethnicity:** Without assume any superior ethnicity - Categorical without order.
+
+-   **Race:** Without assume any superior race - Categorical without order.
+
+-   **Gender**: Without assume any superior gender - Categorical without order.
+
+-   **Disseminated disease:** refers to a condition where an infection or other pathological process spreads throughout the body from its original site. It might be related to Erythema nodosum. - Categorical without order.
+
+-   **Associated hospitalization:** means the hospital within or in association with which a body corporate pursues its objects. (useful? maybe) - Categorical without order.
+
+-   **Antifungal treatment:** as it means. We do not know what happens after the treatment. - Categorical without order.
+
+-   **Comorbidity:**
+
+    -   **Pulmonary disease**: refers to a group of conditions that affect the lungs and respiratory system. These diseases can cause inflammation, damage, or obstruction of the airways, leading to various symptoms and complications. **This feature might be highly correlated to the rash.**
+
+    -   **DM:** diabetes.
+
+    -   **Primary or congenital immunodeficiency:** refers to a group of rare, genetic disorders where the immune system doesn't work correctly, leaving individuals vulnerable to recurrent, severe, or unusual infections. **This feature might be highly correlated to the rash.**
+
+    -   **Current malignancy:** refers to a pre-existing chronic condition or other disease (a "comorbidity") that coexists with cancer ("malignancy") at the same time.
+
+    -   **Prior malignancy:** Similar to the previous one. With cancer before.
+
+    -   **Immunosuppresant medication:** are drugs that weaken the immune system to prevent the body from rejecting transplanted organs or treating autoimmune disorders.
+
+    -   **Autoimmune disease:** the body's immune system mistakenly attacks its own healthy tissues and organs.
+
+    -   **HIV:** everyone knows.
+
+    -   **Prematurity:** health issues that are more likely to occur in individuals born preterm, including respiratory problems (like bronchopulmonary dysplasia), infections due to immature immune systems. **This feature might be highly correlated to the rash.**
+
+    -   **Congenital heart disease:** refers to structural defects in the heart that are present at birth.
+
+    -   **comorbidities (choice=None):** Not sure what it is. Maybe it means comorbidity in general?
+
+    -   All the categories of comobodity are coded in yes or no. We can assign them categorical without order or take look at the correlations among them first.
+
+-   
