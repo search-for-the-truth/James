@@ -156,4 +156,51 @@ for (i in 2:nrow(rash)) {
 
     -   All the categories of comobodity are coded in yes or no. We can assign them categorical without order or take look at the correlations among them first.
 
--   
+-   **EIA IgG:** Detection of rubella IgM by enzyme immunoassay (EIA) is used to confirm suspected cases of acute rubella infection and congenital rubella syndrome (CRS). (Categorical without order)
+
+-   **EIA IgM:** An EIA IgM test uses a form of enzyme immunoassay (EIA) to detect Immunoglobulin M (IgM) antibodies, which are the first antibodies the body produces in response to a new infection, indicating recent or active exposure to a specific virus, bacterium, or other pathogen. (Categorical without order)
+
+-   **Titer 1:** A blood test that measures the level of specific antibodies in the blood (This might be highly correlated to the rash, IgG, IgM) (Categorical with order by taking $log_2$)
+
+-   **CXR: Normal:** X - ray
+
+-   **CXR: Lymphadenopathy:** chest X-ray
+
+-   **CXR: Pleural effusion:** Pleural effusion" is commonly used as a catch-all term to describe any abnormal accumulation of fluid in the pleural cavity
+
+-   CXR: Cavitation
+
+-   CXR: Consolidation/Opacity
+
+-   CXR: Nodules/Micronodules
+
+-   CXR: Pneumothorax
+
+-   No CXR performed
+
+-   Was tissue/fluid cultured?
+
+-   Was specimen sent for pathology?
+
+```{r}
+# data cleaning
+# drop the na
+rash_df <- na.omit(rash_df)
+```
+
+## Graph
+
+First question, what does the distribution of age look like?
+
+```{r}
+library(ggplot2)
+# transform the string to number in age
+rash_df$`Age at diagnosis` <- as.numeric(rash_df$`Age at diagnosis`)
+ggplot(rash_df, aes(x = `Age at diagnosis`)) + geom_histogram(bins = 20) + geom_density(kernel = "gaussian", bw= 0.1, alpha=.3)
+```
+
+Gender weights
+
+```{r}
+ggplot(rash_df, aes(x = "gender")) + geom_bar()
+```
