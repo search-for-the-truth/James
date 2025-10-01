@@ -316,4 +316,24 @@ knitr::kable(over_half)
 knitr::kable(below_half[1:28,])
 ```
 
-### 
+### PCA:
+
+#### The most important vectors.(Variances)
+
+```{r}
+#| echo: false
+#| warning: false
+
+library(factoextra)
+pca_data <- prcomp(one_hot_encoded_df,scale = T)
+fviz_eig(pca_data,addlabels = T)
+```
+
+#### Top 10 the most contributed factors
+
+```{r}
+#| echo: false
+#| warning: false
+
+fviz_pca_biplot(pca_data, select.var = list(contrib = 10))
+```
