@@ -334,6 +334,8 @@ fviz_eig(pca_data,addlabels = T)
 ```{r}
 #| echo: false
 #| warning: false
+#| fig-width: 18
+#| fig-height: 18
 
-fviz_pca_biplot(pca_data, select.var = list(contrib = 10))
+fviz_pca_biplot(pca_data, repel=T,select.var = list(contrib = 10))
 ```
