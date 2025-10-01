@@ -89,6 +89,7 @@ Pediatric coccidioidomycosis (Valley fever) is **a fungal infection acquired by
 
 ```{r}
 #| echo: False
+#| warning: false
 
 #load the data
 rash <- read.csv("../CocciProjectforStats.csv", sep = '\t')
@@ -96,6 +97,7 @@ rash <- read.csv("../CocciProjectforStats.csv", sep = '\t')
 
 ```{r}
 #| echo: false
+#| warning: false
 
 # make header
 rash_header <- strsplit(rash[1,],",")[[1]]
@@ -168,7 +170,7 @@ for (i in 2:nrow(rash)) {
 
 -   **CXR: Pleural effusion:** Pleural effusion" is commonly used as a catch-all term to describe any abnormal accumulation of fluid in the pleural cavity
 
--   CXR: Cavitation
+-   **CXR: Cavitation:**
 
 -   CXR: Consolidation/Opacity
 
@@ -183,6 +185,8 @@ for (i in 2:nrow(rash)) {
 -   Was specimen sent for pathology?
 
 ```{r}
+#| echo: false
+#| warning: false
 # data cleaning
 # drop the na
 
@@ -196,7 +200,12 @@ The original dataset has `{r} nrow(rash_df)` instances. After dropped the empty 
 
 First question, what does the distribution of age look like?
 
+### Age plot:
+
 ```{r}
+#| echo: false
+#| fig-width: 15
+#| fig-height: 10
 library(ggplot2)
 # transform the string to number in age
 rash_df_cleaned$`Age at diagnosis` <- as.numeric(rash_df_cleaned$`Age at diagnosis`)
@@ -207,9 +216,13 @@ ggplot(rash_df_cleaned, aes(x = `Age at diagnosis`)) +
   
 ```
 
+### Common factor plot:
+
 ```{r}
 #| fig-height: 15
 #| fig-width: 15
+#| echo: false
+#| warning: false
 
 library(dplyr)
 library(ggplot2)
@@ -251,20 +264,56 @@ rash_plot <- ggplot(rash_count, aes(x = `Erythema nodosum`, y=n)) +
 (gen_plot + race_plot) / (eth_plot + rash_plot)
 ```
 
+### Correlation plot:
+
 ```{r}
 #| fig-height: 30
 #| fig-width: 30
+#| echo: false
+#| warning: false
 library(recipes)
 rash_dummy <- recipe(~., data = rash_df_cleaned) %>%
   step_rm(`Study ID`) %>%
+  step_rm(`Titer 1:`) %>%
   step_zv(all_nominal_predictors()) %>%
   step_dummy(all_nominal_predictors(), one_hot = TRUE)
 
 prepared_rec <- prep(rash_dummy, training = rash_df_cleaned)
 one_hot_encoded_df <- bake(prepared_rec, new_data = rash_df_cleaned)
+one_hot_encoded_df$Titer <- log2(as.numeric(rash_df_cleaned$`Titer 1:`))
 
 rash_cor <- cor(one_hot_encoded_df)
 library(ggcorrplot)
 ggcorrplot(rash_cor,hc.order = TRUE, outline.col = "white",
            method = "circle")
 ```
+
+### Positive correlated features:
+
+```{r}
+#| echo: false
+library(reshape2)
+library(knitr)
+cormat <- melt(rash_cor)
+cormat_orderd <- cormat %>%
+  arrange(desc(value)) %>%
+  filter((value != 1.0) & (value != -1.0))
+
+over_half <- cormat_orderd %>%
+  filter(value >= 0.5)
+
+below_half <- cormat_orderd %>%
+  filter(value <= -0.5)
+
+knitr::kable(over_half)
+```
+
+### Negative correlated features:
+
+```{r}
+#| echo: false
+#| warning: false
+knitr::kable(below_half[1:28,])
+```
+
+### 
