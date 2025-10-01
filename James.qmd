@@ -185,8 +185,12 @@ for (i in 2:nrow(rash)) {
 ```{r}
 # data cleaning
 # drop the na
-rash_df <- na.omit(rash_df)
+
+rash_df[rash_df == ""] <- NA 
+rash_df_cleaned <- na.omit(rash_df)
 ```
+
+The original dataset has `{r} nrow(rash_df)` instances. After dropped the empty rows, it still has `{r} nrow(rash_df)` .
 
 ## Graph
 
@@ -195,12 +199,72 @@ First question, what does the distribution of age look like?
 ```{r}
 library(ggplot2)
 # transform the string to number in age
-rash_df$`Age at diagnosis` <- as.numeric(rash_df$`Age at diagnosis`)
-ggplot(rash_df, aes(x = `Age at diagnosis`)) + geom_histogram(bins = 20) + geom_density(kernel = "gaussian", bw= 0.1, alpha=.3)
+rash_df_cleaned$`Age at diagnosis` <- as.numeric(rash_df_cleaned$`Age at diagnosis`)
+ggplot(rash_df_cleaned, aes(x = `Age at diagnosis`)) + 
+  geom_histogram(bins = 20,fill="steelblue") +
+  labs(title = "Age") +
+  theme(plot.title = element_text(hjust = 0.5))
+  
 ```
 
-Gender weights
+```{r}
+#| fig-height: 15
+#| fig-width: 15
+
+library(dplyr)
+library(ggplot2)
+library(patchwork)
+
+gen_count <- rash_df_cleaned %>%
+  count(Gender)
+
+race_count <- rash_df_cleaned %>%
+  count(Race)
+
+eth_count <- rash_df_cleaned %>%
+  count(Ethnicity)
+
+rash_count <- rash_df_cleaned %>%
+  count(`Erythema nodosum`)
+
+gen_plot <- ggplot(gen_count, aes(x = Gender, y=n)) + 
+  geom_col(fill="steelblue") + 
+  labs(title = "Gender", x="gender",y="People") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+race_plot <- ggplot(race_count, aes(x = Race, y=n)) + 
+  geom_col(fill="steelblue") + 
+  labs(title = "Race", x="Race",y="People") +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+
+eth_plot <- ggplot(eth_count, aes(x = Ethnicity, y=n)) + 
+  geom_col(fill="steelblue") + 
+  labs(title = "Ethnicity", x="Ethnicity",y="People") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+rash_plot <- ggplot(rash_count, aes(x = `Erythema nodosum`, y=n)) + 
+  geom_col(fill="steelblue") + 
+  labs(title = "Erythema nodosum", x="Erythema nodosum",y="People") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+(gen_plot + race_plot) / (eth_plot + rash_plot)
+```
 
 ```{r}
-ggplot(rash_df, aes(x = "gender")) + geom_bar()
+#| fig-height: 30
+#| fig-width: 30
+library(recipes)
+rash_dummy <- recipe(~., data = rash_df_cleaned) %>%
+  step_rm(`Study ID`) %>%
+  step_zv(all_nominal_predictors()) %>%
+  step_dummy(all_nominal_predictors(), one_hot = TRUE)
+
+prepared_rec <- prep(rash_dummy, training = rash_df_cleaned)
+one_hot_encoded_df <- bake(prepared_rec, new_data = rash_df_cleaned)
+
+rash_cor <- cor(one_hot_encoded_df)
+library(ggcorrplot)
+ggcorrplot(rash_cor,hc.order = TRUE, outline.col = "white",
+           method = "circle")
 ```
